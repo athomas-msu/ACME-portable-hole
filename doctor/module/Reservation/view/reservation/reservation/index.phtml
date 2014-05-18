@@ -1,0 +1,32 @@
+ <?php
+ // module/Registrant/view/reservation/reservation/index.phtml:
+
+ $name = 'Reservations';
+ $this->headTitle($name);
+ ?>
+ <h1><?php echo $this->escapeHtml($name); ?></h1>
+ <p>
+     <a href="<?php echo $this->url('reservation', array('action'=>'add'));?>">Add new reservation</a>
+ </p>
+
+ <table class="table">
+ <tr>
+     <th>Confirmation ID</th>
+     <th>Status</th>
+     <th>Registrant ID</th>
+     <th>&nbsp;</th>
+ </tr>
+ <?php foreach ($reservations as $reservation) : ?>
+ <tr>
+     <td><?php echo $this->escapeHtml($reservation->id);?></td>
+     <td><?php echo $this->escapeHtml($reservation->status);?></td>
+     <td><?php echo $this->escapeHtml($reservation->registrant_id);?></td>
+     <td>
+         <a href="<?php echo $this->url('reservation',
+             array('action'=>'edit', 'id' => $reservation->id));?>">Edit</a>
+         <a href="<?php echo $this->url('reservation',
+             array('action'=>'delete', 'id' => $reservation->id));?>">Delete</a>
+     </td> 
+ </tr>
+ <?php endforeach; ?>
+ </table>

@@ -1,0 +1,30 @@
+ <?php
+ // module/Registrant/view/registrant/registrant/index.phtml:
+
+ $name = 'Students';
+ $this->headTitle($name);
+ ?>
+ <h1><?php echo $this->escapeHtml($name); ?></h1>
+ <p>
+     <a href="<?php echo $this->url('registrant', array('action'=>'add'));?>">Register a new student</a>
+ </p>
+
+ <table class="table">
+ <tr>
+     <th>Name</th>
+     <th>Email</th>
+     <th>&nbsp;</th>
+ </tr>
+ <?php foreach ($registrants as $registrant) : ?>
+ <tr>
+     <td><?php echo ucfirst($this->escapeHtml($registrant->name));?></td>
+     <td><?php echo $this->escapeHtml($registrant->email);?></td>
+     <!-- td>
+         <a href="<?php echo $this->url('registrant',
+             array('action'=>'edit', 'id' => $registrant->id));?>">Bubba</a>
+         <a href="<?php echo $this->url('registrant',
+             array('action'=>'delete', 'id' => $registrant->id));?>">Delete</a>
+     </td --> 
+ </tr>
+ <?php endforeach; ?>
+ </table>

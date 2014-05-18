@@ -1,0 +1,23 @@
+<?php
+ // module/Registrant/view/reservation/reservation/add.phtml:
+
+ $title = 'Add new reservation';
+ $this->headTitle($title);
+ ?>
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+ <?php
+ $form->setAttribute('action', $this->url('reservation', array('action' => 'add')));
+ $form->prepare();
+ 
+
+ echo $this->form()->openTag($form);
+ echo $this->formHidden($form->get('id'));
+ echo "<fieldset>";
+ echo $this->formRow($form->get('status'));
+ echo "</fieldset>";
+ echo "<fieldset>";
+ echo $this->formRow($form->get('registrant_id'));
+ echo "</fieldset>";
+ echo $this->formSubmit($form->get('submit'));
+  echo $this->form()->closeTag();
+  

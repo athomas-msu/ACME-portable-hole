@@ -1,0 +1,61 @@
+<?php
+
+namespace Reservation\Controller;
+
+ use Zend\Mvc\Controller\AbstractActionController;
+ use Zend\View\Model\ViewModel;
+ use Reservation\Model\Reservation;
+ use Reservation\Form\ReservationForm;
+
+
+class ReservationController extends AbstractActionController
+{
+    protected $reservationTable;
+
+     public function indexAction()
+    {
+        return new ViewModel(array(
+            'reservations' => $this->getReservationTable()->fetchAll(),
+        ));
+    }
+
+     public function addAction()
+    {
+         $form = new ReservationForm();
+         $form->get('submit')->setValue('Add');
+
+         $request = $this->getRequest();
+         if ($request->isPost()) {
+             $reservation = new Reservation();
+             $form->setInputFilter($reservation->getInputFilter());
+             $form->setData($request->getPost());
+
+             if ($form->isValid()) {
+                 $reservation->exchangeArray($form->getData());
+                 $this->getReservationTable()->saveReservation($reservation);
+
+                 // Redirect to list of reservations
+                 return $this->redirect()->toRoute('reservation');
+             }
+         }
+         return array('form' => $form);
+     }
+
+     public function editAction()
+    {
+    }
+
+     public function deleteAction()
+    {
+    }
+
+    // module/Reservation/src/Reservation/Controller/ReservationController.php:
+    public function getReservationTable()
+    {
+        if (! isset($this->ReservationTable)) {
+            $sm = $this->getServiceLocator();
+            $this->ReservationTable = $sm->get('Reservation\Model\ReservationTable');
+        }
+        return $this->ReservationTable;
+    }
+}

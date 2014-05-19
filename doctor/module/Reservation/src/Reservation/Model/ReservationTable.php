@@ -18,13 +18,24 @@ namespace Reservation\Model;
          return $resultSet;
      }
 
+    public function getAvailableCount($registrantId)
+    {
+        $rowset = $this->tableGateway->select(array(
+            'id' => new \Zend\Db\Sql\Expression('COUNT(*)'),
+            'registrant_id' => $registrantId
+            ));
+        $row = $rowset->current();
+        return $row->num;
+    }
+
+
     public function getAvailableReservation()
     {
         $rowset = $this->tableGateway->select(array('registrant_id' => ""));
         $row = $rowset->current();
         return $row;
     }
-    
+
      public function getReservation($id)
      {
          //$id  = (int) $id;

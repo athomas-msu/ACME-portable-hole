@@ -43,10 +43,23 @@ class ReservationController extends AbstractActionController
 
      public function editAction()
     {
+        $res = $this->params()->fromRoute('res');
+        return $this->getReservationTable()->saveReservation($res);
     }
 
      public function deleteAction()
     {
+    }
+
+    public function countAvailableAction()
+    {
+        $registrantID = $this->params()->fromRoute('registrantID');
+        return $this->getReservationTable()->getAvailableCount($registrantID);
+    }
+
+    public function availableAction()
+    {
+        return $this->getReservationTable()->getAvailableReservation();
     }
 
     // module/Reservation/src/Reservation/Controller/ReservationController.php:

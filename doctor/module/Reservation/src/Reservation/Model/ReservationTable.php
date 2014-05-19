@@ -18,6 +18,13 @@ namespace Reservation\Model;
          return $resultSet;
      }
 
+    public function getAvailableReservation()
+    {
+        $rowset = $this->tableGateway->select(array('registrant_id' => ""));
+        $row = $rowset->current();
+        return $row;
+    }
+    
      public function getReservation($id)
      {
          //$id  = (int) $id;

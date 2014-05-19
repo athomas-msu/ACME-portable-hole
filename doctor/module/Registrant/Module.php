@@ -4,12 +4,13 @@ namespace Registrant;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Registrant\Model\Registrant;
 use Registrant\Model\RegistrantTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
-class Module implements AutoloaderProviderInterface, ConfigProviderInterface
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface, ServiceProviderInterface
 {
     public function getAutoloaderConfig()
     {

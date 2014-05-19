@@ -28,7 +28,23 @@ namespace Registrant\Form;
                  'label' => 'Email',
              ),
          ));
-         $this->add(array(
+        $this->add(array(     
+            'type' => 'Zend\Form\Element\Select',       
+            'name' => 'tickets',
+            'attributes' =>  array(
+               'id' => 'tickets'              
+            ),
+            'options' => array(
+                'label' => 'Number of Tickets',
+                'options' => array(
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                ),
+            ),
+        ));         
+        $this->add(array(
              'name' => 'submit',
              'type' => 'Submit',
              'attributes' => array(

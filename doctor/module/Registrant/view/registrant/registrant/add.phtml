@@ -1,16 +1,27 @@
 <?php
  // module/Registrant/view/registrant/registrant/add.phtml:
 
- $title = 'Register a new student';
+ $title = 'Register For tickets';
  $this->headTitle($title);
  ?>
  <h1><?php echo $this->escapeHtml($title); ?></h1>
  <?php
+ 
  $form->setAttribute('action', $this->url('registrant', array('action' => 'add')));
  $form->prepare();
 
-
+echo print_r($_SESSION['Registrant\Controller']['thingy']);
  echo $this->form()->openTag($form);
- echo $this->formCollection($form);
+ echo $this->formHidden($form->get('id'));
+ echo "<fieldset>";
+ echo $this->formRow($form->get('name'));
+ echo "</fieldset>";
+ echo "<fieldset>";
+ echo $this->formRow($form->get('email'));
+ echo "</fieldset>";
+ echo "<fieldset>";
+ echo $this->formRow($form->get('tickets'));
+ echo "</fieldset>";
+ echo $this->formSubmit($form->get('submit'));
  echo $this->form()->closeTag();
-  
+    

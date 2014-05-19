@@ -32,7 +32,7 @@ namespace Registrant\Model;
      public function saveRegistrant(Registrant $Registrant)
      {
          $data = array(
-            'id' => uniqid(),
+             'id' => $_SESSION['Registrant\Controller']['registrantId'],
              'name' => $Registrant->name,
              'email'  => $Registrant->email,
          );

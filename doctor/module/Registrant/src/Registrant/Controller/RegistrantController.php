@@ -9,7 +9,7 @@ namespace Registrant\Controller;
  use Registrant\Form\RegistrantForm;
  use Reservation\Model\Reservation;
  use Reservation\Controller\ReservationController;
- 
+
 
 class RegistrantController extends AbstractActionController
 {
@@ -26,7 +26,6 @@ class RegistrantController extends AbstractActionController
     {
          $form = new RegistrantForm();
          $form->get('submit')->setValue('Add');
-        echo print_r($this->getServiceLocator()->get('Reservation\Controller\ReservationController'));
 
          $request = $this->getRequest();
          if ($request->isPost()) {
@@ -37,27 +36,31 @@ class RegistrantController extends AbstractActionController
              if ($form->isValid()) {
                  $registrant->exchangeArray($form->getData());
                  $this->getRegistrantTable()->saveRegistrant($registrant);
-                 
-                 for ($i = 1; $i <= (int)$form->get('tickets')->getValue(); $i++) {
-                    //$resControl = $this->forward()->dispatch('ReservationController' /*,array('action' => 'getReservationTable')*/);
-                    //$resControl = new ReservationController();
-                    //$reservation = new Reservation();
-                    //$reservation = $resControl->getReservationTable()->getAvailableReservation();
-                    //echo $reservation->$id;
-                 }
 
+                $currentRegistrant = $_SESSION['Registrant\Controller']['registrantId'];
+
+                 for ($i = 1; $i <= (int)$form->get('tickets')->getValue(); $i++) {
+                    $resAvailable = $this->forward()->dispatch('Reservation\Controller\Reservation', array('action' => 'available'));
+                    $resAvailable->registrant_id = $currentRegistrant;
+                    $resAvailable->status = "R";
+                    $this->forward()->dispatch('Reservation\Controller\Reservation', array(
+                        'action' => 'edit',
+                        'res' => $resAvailable));
+echo print_r($this->forward()->dispatch('Reservation\Controller\Reservation', array(
+    'action' => 'countAvailable',
+    'registrantID' => $currentRegistrant)));
+                 }
                  // Redirect to list of registrants
                  //return $this->redirect()->toRoute('thankyou');
              }
          }
-//echo "|" . $form->get('tickets')->getValue() . "|";
          return array('form' => $form);
      }
 
     public function editAction() {}
      public function thankyouAction()
     {
-    
+
          $id =  $this->params()->fromRoute('id', 0);
 
         //if (!$id) {
@@ -100,7 +103,7 @@ class RegistrantController extends AbstractActionController
              'form' => $form,
          );
      }
-    
+
 
      public function deleteAction()
     {

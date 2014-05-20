@@ -2,6 +2,7 @@
 namespace Reservation\Model;
 
  use Zend\Db\TableGateway\TableGateway;
+ use Zend\Db\Sql\Select;
 
  class ReservationTable
  {
@@ -18,13 +19,36 @@ namespace Reservation\Model;
          return $resultSet;
      }
 
+    public function getAvailableCount($registrantId)
+    {
+        $select = new Select();
+        /*
+        $sql = 'SELECT COUNT(ID) FROM Reservation WHERE ' .
+           'registrant_id = :registrantId';
+
+        $stmt = new Zend_Db_Statement_Mysqli($db, $sql);
+
+        $stmt->execute(array(':registrant_id' => $registrantId));
+        $row = $stmt->fetch();
+        echo print_r($row);
+        */
+        $select = $this->tableGateway->select(function (Select $select) {
+            $select->from(array('cnt' => 'COUNT(ID)'));
+            $select->where->('registrant_id = "',$registrantId);
+            });
+        $rowset = $db->query($select)
+        $row = $rowset->current();
+        return $row->cnt;
+    }
+
+
     public function getAvailableReservation()
     {
         $rowset = $this->tableGateway->select(array('registrant_id' => ""));
         $row = $rowset->current();
         return $row;
     }
-    
+
      public function getReservation($id)
      {
          //$id  = (int) $id;

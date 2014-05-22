@@ -41,14 +41,18 @@ class RegistrantController extends AbstractActionController
 
                  for ($i = 1; $i <= (int)$form->get('tickets')->getValue(); $i++) {
                     $resAvailable = $this->forward()->dispatch('Reservation\Controller\Reservation', array('action' => 'available'));
+                    if (!is_object($resAvailable)){
+                        echo "Out of tickets";
+                        return $this->redirect()->toURL('http://athomas.isp.msu.edu/sorry.php');
+                        }
                     $resAvailable->registrant_id = $currentRegistrant;
                     $resAvailable->status = "R";
                     $this->forward()->dispatch('Reservation\Controller\Reservation', array(
                         'action' => 'edit',
                         'res' => $resAvailable));
-echo print_r($this->forward()->dispatch('Reservation\Controller\Reservation', array(
-    'action' => 'countAvailable',
-    'registrantID' => $currentRegistrant)));
+                    echo "\n" . $this->forward()->dispatch('Reservation\Controller\Reservation', array(
+                        'action' => 'countAvailable',
+                        'registrantID' => $currentRegistrant));
                  }
                  // Redirect to list of registrants
                  //return $this->redirect()->toRoute('thankyou');

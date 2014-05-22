@@ -2,7 +2,7 @@
 namespace Reservation\Model;
 
  use Zend\Db\TableGateway\TableGateway;
- use Zend\Db\Adapter\Driver\Mysqli\Statement;
+ use Zend\Db\Sql\Expression;
 
  class ReservationTable
  {
@@ -21,23 +21,23 @@ namespace Reservation\Model;
 
     public function getAvailableCount($registrantId)
     {
-        $sql = 'SELECT COUNT(ID) FROM Reservation WHERE ' .
-           'registrant_id = :registrantId';
-
-        $stmt = new Zend_Db_Statement_Mysqli($db, $sql);
-
-        $stmt->execute(array(':registrant_id' => $registrantId));
-        $row = $stmt->fetch();
-        echo print_r($row);
-        //$rowset = $this->tableGateway->select($selectAvailable);
-        //$row = $rowset->current();
-        //return $row->num;
+        return $this->getRegistrant($registrantId)->count();
     }
 
+     public function getRegistrant($id)
+     {
+         //$id  = (int) $id;
+         $rowset = $this->tableGateway->select(array('registrant_id' => $id));
+         //$row = $rowset->current();
+         if (!$rowset) {
+             throw new \Exception("Could not find registrant $id");
+         }
+         return $rowset;
+     }
 
     public function getAvailableReservation()
     {
-        $rowset = $this->tableGateway->select(array('registrant_id' => ""));
+        $rowset = $this->tableGateway->select(array('registrant_id' => ''));
         $row = $rowset->current();
         return $row;
     }
@@ -56,7 +56,6 @@ namespace Reservation\Model;
      public function saveReservation(Reservation $Reservation)
      {
          $data = array(
-            'id' => uniqid(),
              'status' => $Reservation->status,
              'registrant_id'  => $Reservation->registrant_id,
          );
